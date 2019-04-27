@@ -183,7 +183,7 @@ window.onload = function () {
     },
     methods: {
       createVoiceChannel: function () {
-        let channelName = new Date().getTime();
+        let channelName = "botCreatedChannel-" + new Date().getTime();
         // TODO: replace with trainer or student name
         // instead of Bot name
         channelName += "-" + client.user.username;

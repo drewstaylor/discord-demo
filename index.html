@@ -14,10 +14,28 @@
   <script src="./index.js"></script>
   
   <div id="chat_demo" class="col-sm-9">
-      <button v-on:click="createVoiceChannel" v-if="!currentChannel">Start Channel</button>
+      <button v-on:click="createVoiceChannel" v-if="!currentChannel">Start A New Chat Channel</button>
       <div class="chat" v-if="currentChannel">
-        <p>chat goes here</p>
+          <!--
+          <button v-on:click="return false;">Join Channel</button>
+          -->
+          <iframe v-bind:class="{ active: currentChannel }" v-if="currentChannel" class="discord" src="https://titanembeds.com/embed/569234045183983623"></iframe>
       </div>
   </div>
+  <style>
+    #chat_demo {
+      width: 100%;
+      height: auto;
+    }
+    iframe:not(.active) {
+      display: none;
+    }
+    iframe.active {
+      width: 90vw;
+      height: 90vh;
+      display: inline-block;
+      margin: auto;
+    }
+  </style>
 </body>
 </html>
