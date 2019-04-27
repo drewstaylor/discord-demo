@@ -1,5 +1,23 @@
+
+<!DOCTYPE html>
 <html>
+<head>
+  <!-- Vue -->
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<!-- Firebase -->
+	<script src="https://gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+	<!-- VueFire -->
+	<script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
+</head>
 <body>
+  <!-- Discord -->
   <script src="./index.js"></script>
+  
+  <div id="chat_demo" class="col-sm-9">
+      <button v-on:click="createVoiceChannel" v-if="!currentChannel">Start Channel</button>
+      <div class="chat" v-if="currentChannel">
+        <p>chat goes here</p>
+      </div>
+  </div>
 </body>
 </html>

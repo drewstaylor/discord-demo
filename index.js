@@ -1,3 +1,5 @@
+// Discord
+
 // Load up the discord.js library
 const Discord = require("discord.js");
 
@@ -10,6 +12,7 @@ const client = new Discord.Client();
 const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
+let guild = null;
 
 client.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
@@ -17,6 +20,8 @@ client.on("ready", () => {
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
   client.user.setActivity(`Serving ${client.guilds.size} servers`);
+  guild = client.guilds.get(config.server);
+  console.log("guild =>", guild);
 });
 
 client.on("guildCreate", guild => {
@@ -34,11 +39,12 @@ client.on("guildDelete", guild => {
 
 client.on("message", async message => {
   // This event will run on every single message received, from any channel or DM.
-  console.log(message);
   // It's good practice to ignore other bots. This also makes your bot ignore itself
   // and not get into a spam loop (we call that "botception").
   if (message.author.bot) {
     return;
+  } else {
+    console.log(message);
   }
   
   // Also good practice to ignore any message that does not start with our prefix, 
@@ -149,3 +155,46 @@ client.on("message", async message => {
 });
 
 client.login(config.token);
+
+// Vue.js
+let appConfig = {
+  apiKey: config.FB_API_KEY,
+  authDomain: config.FB_AUTH_DOMAIN,
+  databaseURL: config.FB_DB_URL,
+  projectId: "esportsgametrainers",
+  storageBucket: config.FB_STORAGE_BUCKET,
+  messagingSenderId: config.FB_MSG_SENDER_ID
+};
+
+let app = firebase.initializeApp(appConfig);
+let db = app.database();
+
+// Open Session Ref.
+let openSessions = db.ref('openSessions');
+
+window.onload = function () {
+  let vm = new Vue({
+    el: '#chat_demo',
+    firebase: {
+      openSessions: openSessions
+    },
+    data: {
+      currentChannel: null
+    },
+    methods: {
+      createVoiceChannel: function () {
+        let channelName = new Date().getTime();
+        // TODO: replace with trainer or student name
+        // instead of Bot name
+        channelName += "-" + client.user.username;
+        // Create channel
+        let that = this;
+        guild.createChannel(channelName, 'voice')
+          .then(function(channel) {
+            console.log(channel);
+            that.currentChannel = channel;
+          });
+      }
+    }
+  });
+}
